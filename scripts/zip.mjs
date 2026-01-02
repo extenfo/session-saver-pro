@@ -38,12 +38,29 @@ function assertIconsPresent() {
 }
 
 function readManifest() {
-  const raw = readFileSync("manifest.json", "utf8");
-  return JSON.parse(raw);
+  let raw;
+  try {
+    raw = readFileSync("manifest.json", "utf8");
+  } catch (err) {
+    if (err && err.code === "ENOENT") {
+      throw new Error(
+        "manifest.json not found. Ensure manifest.json exists in the project root before running this script."
+      );
+    }
+    const message = err && err.message ? err.message : String(err);
+    throw new Error(`Failed to read manifest.json: ${message}`);
+  }
+
+  try {
+    return JSON.parse(raw);
+  } catch (err) {
+    const message = err && err.message ? err.message : String(err);
+    throw new Error(`Failed to parse manifest.json as valid JSON: ${message}`);
+  }
 }
 
 function assertLocalesPresent(manifest) {
-  const defaultLocale = manifest && manifest.default_locale;
+  const defaultLocale = manifest.default_locale;
   if (!defaultLocale) return;
 
   if (!existsSync("_locales")) {
@@ -67,7 +84,7 @@ assertLocalesPresent(manifest);
 
 copyIntoDist(distDir, "manifest.json");
 copyIntoDist(distDir, "icons");
-if (manifest && manifest.default_locale) copyIntoDist(distDir, "_locales");
+if (manifest.default_locale) copyIntoDist(distDir, "_locales");
 copyIntoDist(distDir, "src");
 copyIntoDist(distDir, "site");
 
