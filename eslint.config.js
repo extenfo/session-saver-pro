@@ -20,6 +20,24 @@ module.exports = [
     },
   },
   {
+    files: ["eslint.config.js", ".eslintrc.cjs"],
+    languageOptions: {
+      sourceType: "script",
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ["scripts/**/*.js", "scripts/**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
     files: ["src/**/*.js"],
     languageOptions: {
       sourceType: "module",
