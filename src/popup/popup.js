@@ -105,7 +105,7 @@ function renderSessions() {
 
       const tabs = countTabs(s);
       const dateText = formatDate(s.updatedAt || s.createdAt);
-      const matchText = (q.trim().length > 0) ? t("popupMatchText", [String(item.matchCount)]) : "";
+      const matchText = (q.trim().length > 0) ? ` • ${t("popupMatchText", [String(item.matchCount)])}` : "";
       meta.textContent = `${dateText} • ${tabs} ${t("popupTabsWord")}${matchText}`;
 
       top.appendChild(title);
