@@ -186,6 +186,77 @@ async function updateExistingSession({ sessionId, name }) {
   return updated;
 }
 
+function sessionUrlSet(session) {
+  const urls = new Set();
+  const windows = Array.isArray(session && session.windows) ? session.windows : [];
+  for (const w of windows) {
+    const tabs = Array.isArray(w && w.tabs) ? w.tabs : [];
+    for (const t of tabs) {
+      const url = t && t.url;
+      if (typeof url === "string" && url.length > 0) urls.add(url);
+    }
+  }
+  return urls;
+}
+
+async function addTabsToExistingSession({ sessionId }) {
+  if (!sessionId || typeof sessionId !== "string") {
+    throw new Error("Invalid sessionId");
+  }
+
+  if (sessionId === AUTOSAVE_ID) {
+    throw new Error("Cannot add tabs to autosave session");
+  }
+
+  const settings = await getSettings();
+  const sessions = await getSessions();
+  const existing = sessions.find((s) => s && s.id === sessionId);
+  if (!existing) {
+    throw new Error("Session not found");
+  }
+
+  const existingUrls = sessionUrlSet(existing);
+
+  const windows = await chrome.windows.getAll({ populate: true, windowTypes: ["normal"] });
+  const modeledWindows = windows
+    .map(windowToModel)
+    .map((w) => {
+      const tabs = Array.isArray(w.tabs) ? w.tabs : [];
+      const uniqueTabs = [];
+      for (const t of tabs) {
+        const url = t && t.url;
+        if (!url || existingUrls.has(url)) continue;
+        existingUrls.add(url);
+        uniqueTabs.push(t);
+      }
+      return {
+        ...w,
+        tabs: uniqueTabs,
+      };
+    })
+    .filter((w) => (w.tabs || []).length > 0);
+
+  const addedTabs = modeledWindows.reduce((acc, w) => acc + ((w.tabs || []).length), 0);
+  if (addedTabs === 0) {
+    return { session: existing, addedTabs: 0 };
+  }
+
+  const updatedAt = now();
+  const updated = {
+    ...existing,
+    createdAt: existing.createdAt || existing.updatedAt || updatedAt,
+    updatedAt,
+    windows: [...(Array.isArray(existing.windows) ? existing.windows : []), ...modeledWindows],
+  };
+
+  let nextSessions = sessions.filter((s) => s && s.id !== sessionId);
+  nextSessions = [updated, ...nextSessions];
+  nextSessions = applySessionLimit({ sessions: nextSessions, maxSessions: settings.maxSessions });
+
+  await setSessions(nextSessions);
+  return { session: updated, addedTabs };
+}
+
 async function upsertAutosaveSession() {
   const settings = await getSettings();
   const windows = await chrome.windows.getAll({ populate: true, windowTypes: ["normal"] });
@@ -413,6 +484,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         case "UPDATE_SESSION": {
           const session = await updateExistingSession({ sessionId: message.sessionId, name: message.name });
           sendResponse({ ok: true, session });
+          break;
+        }
+        case "ADD_TABS_TO_SESSION": {
+          const result = await addTabsToExistingSession({ sessionId: message.sessionId });
+          sendResponse({ ok: true, result });
           break;
         }
         case "RESTORE_SESSION": {

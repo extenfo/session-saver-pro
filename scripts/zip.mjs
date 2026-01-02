@@ -1,4 +1,5 @@
-import { cpSync, mkdirSync, rmSync } from "node:fs";
+import { cpSync, mkdirSync, rmSync, existsSync, readdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 
 function ensureCleanDir(dir) {
@@ -11,8 +12,21 @@ function copyIntoDist(distDir, path) {
   cpSync(path, dest, { recursive: true });
 }
 
+function ensureIcons() {
+  try {
+    const entries = existsSync("icons") ? readdirSync("icons") : [];
+    if (entries.length > 0) return;
+  } catch {
+    // ignore
+  }
+
+  execFileSync(process.execPath, ["./scripts/gen-icons.mjs"], { stdio: "inherit" });
+}
+
 const distDir = "dist";
 ensureCleanDir(distDir);
+
+ensureIcons();
 
 copyIntoDist(distDir, "manifest.json");
 copyIntoDist(distDir, "icons");

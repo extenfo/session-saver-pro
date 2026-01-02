@@ -104,6 +104,13 @@ function renderSessions() {
         await onRestore(s.id);
       });
 
+      const addTabsBtn = document.createElement("button");
+      addTabsBtn.className = "btn";
+      addTabsBtn.textContent = "Add Tabs";
+      addTabsBtn.addEventListener("click", async () => {
+        await onAddTabs(s.id);
+      });
+
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "btn btnDanger";
       deleteBtn.textContent = "Delete";
@@ -113,12 +120,13 @@ function renderSessions() {
 
       const updateBtn = document.createElement("button");
       updateBtn.className = "btn";
-      updateBtn.textContent = "Update";
+      updateBtn.textContent = "Overwrite";
       updateBtn.addEventListener("click", async () => {
         await onUpdate(s.id);
       });
 
       actions.appendChild(restoreBtn);
+      if (s.id !== "autosave") actions.appendChild(addTabsBtn);
       actions.appendChild(updateBtn);
       actions.appendChild(deleteBtn);
 
@@ -147,18 +155,33 @@ async function refreshSessions() {
 
 async function onUpdate(sessionId) {
   setStatus("");
-  const ok = window.confirm("Update this saved session with your current windows/tabs?");
+  const ok = window.confirm("Overwrite this saved session with your current windows/tabs? This cannot be undone.");
   if (!ok) return;
 
   try {
     const name = (sessionNameInputEl && sessionNameInputEl.value) ? sessionNameInputEl.value : "";
     const res = await sendMessage({ type: "UPDATE_SESSION", sessionId, name });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Update failed");
+      throw new Error((res && res.error) || "Overwrite failed");
     }
     await refreshSessions();
     if (sessionNameInputEl) sessionNameInputEl.value = "";
-    setStatus("Updated");
+    setStatus("Overwritten");
+  } catch (e) {
+    setStatus(e instanceof Error ? e.message : String(e));
+  }
+}
+
+async function onAddTabs(sessionId) {
+  setStatus("");
+  try {
+    const res = await sendMessage({ type: "ADD_TABS_TO_SESSION", sessionId });
+    if (!res || !res.ok) {
+      throw new Error((res && res.error) || "Add tabs failed");
+    }
+    const added = (res.result && typeof res.result.addedTabs === "number") ? res.result.addedTabs : 0;
+    await refreshSessions();
+    setStatus(added > 0 ? `Added ${added} tabs` : "No new tabs to add");
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));
   }

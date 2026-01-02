@@ -38,6 +38,12 @@ npm run lint
 npm test
 ```
 
+## Сборка артефакта (dist/)
+
+`npm run build` подготавливает папку `dist/` для релиза (туда копируются `manifest.json`, `src/`, `site/`, `icons/`).
+
+Важно: иконки должны присутствовать в `icons/`. В CI/Release перед сборкой запускается `npm run gen:icons`, а локально это делается автоматически через `postinstall`.
+
 ## Версионирование и релизы (SemVer)
 
 Используется **Semantic Versioning**: `MAJOR.MINOR.PATCH`.
