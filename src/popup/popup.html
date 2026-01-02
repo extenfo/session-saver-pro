@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Session Saver Pro</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="header">
+        <div class="title">Session Saver Pro</div>
+        <input id="sessionNameInput" type="text" placeholder="Session name (optional)" />
+        <button id="saveBtn" class="primary">Save Current Session</button>
+      </div>
+
+      <div class="searchRow">
+        <input id="searchInput" type="text" placeholder="Search by URL, title, domain" />
+      </div>
+
+      <div id="status" class="status" aria-live="polite"></div>
+
+      <div id="sessions" class="sessions"></div>
+
+      <div class="footer">
+        <div id="meta" class="meta"></div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

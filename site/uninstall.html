@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Session Saver Pro — Uninstall</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #101a2e;
+        --border: rgba(255, 255, 255, 0.12);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --accent: #4f8cff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 700px at 10% 10%, rgba(79, 140, 255, 0.22), transparent 50%),
+          var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 34px 18px 44px;
+      }
+      .card {
+        padding: 18px;
+        background: rgba(16, 26, 46, 0.75);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+      }
+      h1 { margin: 0 0 8px; font-size: 22px; }
+      p { margin: 10px 0; color: var(--muted); }
+      .row { display: grid; gap: 10px; margin-top: 12px; }
+      label { font-size: 12px; color: var(--muted); }
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--text);
+        padding: 10px;
+        outline: none;
+      }
+      .btn {
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 12px;
+        border: 1px solid rgba(79, 140, 255, 0.35);
+        background: rgba(79, 140, 255, 0.15);
+        padding: 10px 12px;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .hint { font-size: 12px; color: var(--muted); margin-top: 10px; }
+      code { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.10); padding: 2px 6px; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="card">
+        <h1>Sorry to see you go</h1>
+        <p>If you have 20 seconds, tell us what went wrong. It helps us improve Session Saver Pro.</p>
+
+        <div class="row">
+          <label for="feedback">Feedback</label>
+          <textarea id="feedback" placeholder="What made you uninstall? What feature is missing? Any bugs?"></textarea>
+          <a id="mailto" class="btn" href="#">Send feedback</a>
+          <div class="hint">
+            This page is intended to be hosted (e.g., GitHub Pages). Chrome opens it after uninstall via <code>chrome.runtime.setUninstallURL</code>.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const feedbackEl = document.getElementById('feedback');
+      const mailtoEl = document.getElementById('mailto');
+
+      function updateMailto() {
+        const body = encodeURIComponent(feedbackEl.value || '');
+        const subject = encodeURIComponent('Session Saver Pro — uninstall feedback');
+        // TODO: replace email
+        mailtoEl.href = `mailto:you@example.com?subject=${subject}&body=${body}`;
+      }
+
+      feedbackEl.addEventListener('input', updateMailto);
+      updateMailto();
+    </script>
+  </body>
+</html>

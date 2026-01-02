@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Session Saver Pro — Welcome</title>
+    <link rel="stylesheet" href="welcome.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <div class="brand">
+          <img class="logo" src="../icons/icon128.png" alt="Session Saver Pro" />
+          <div>
+            <h1>Session Saver Pro</h1>
+            <p class="subtitle">Save and restore tab & window sessions. Search by URL, title, and domain.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid">
+        <div class="card">
+          <h2>Quick start</h2>
+          <ol>
+            <li>Click the extension icon in the toolbar.</li>
+            <li>Enter an optional session name.</li>
+            <li>Click <strong>Save Current Session</strong>.</li>
+            <li>Use <strong>Restore</strong> to reopen in new windows.</li>
+            <li>Use <strong>Update</strong> to overwrite a saved session with your current tabs.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h2>Search that actually helps</h2>
+          <p>Type any substring to filter sessions by:</p>
+          <ul>
+            <li><strong>URL</strong> (path & query included)</li>
+            <li><strong>Title</strong></li>
+            <li><strong>Domain</strong></li>
+          </ul>
+          <p class="hint">Examples: <code>github</code>, <code>?q=</code>, <code>docs</code></p>
+        </div>
+
+        <div class="card">
+          <h2>Autosave</h2>
+          <p>Enable autosave in Options to keep an always-fresh <em>Auto-saved</em> snapshot.</p>
+          <div class="actions">
+            <button id="openOptions" class="btn">Open Options</button>
+            <button id="openPopupTip" class="btn btnSecondary">How to pin the extension</button>
+          </div>
+          <p id="pinTip" class="small" hidden>
+            Open <code>chrome://extensions</code>, enable <em>Developer mode</em>, then pin the extension from the toolbar puzzle menu.
+          </p>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="small">Data is stored locally in your browser.</div>
+      </footer>
+    </main>
+
+    <script src="welcome.js"></script>
+  </body>
+</html>

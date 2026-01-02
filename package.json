@@ -1,0 +1,19 @@
+{
+  "name": "session-saver-pro",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Session Saver Pro — Tab & Window Session Manager",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "node -e \"console.log('No tests yet.')\"",
+    "gen:icons": "node ./scripts/gen-icons.mjs",
+    "postinstall": "npm run gen:icons",
+    "build": "npm run zip",
+    "zip": "node ./scripts/zip.mjs"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  }
+}
