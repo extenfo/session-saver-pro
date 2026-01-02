@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Session Saver Pro — Privacy Policy</title>
+    <style>
+      :root {
+        --bg: #0b1220;
+        --panel: #101a2e;
+        --border: rgba(255, 255, 255, 0.12);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.7);
+        --accent: #4f8cff;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background: radial-gradient(1200px 700px at 10% 10%, rgba(79, 140, 255, 0.22), transparent 50%),
+          radial-gradient(900px 600px at 90% 20%, rgba(99, 216, 170, 0.12), transparent 55%),
+          var(--bg);
+        color: var(--text);
+      }
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 34px 18px 44px;
+      }
+      .card {
+        padding: 18px;
+        background: rgba(16, 26, 46, 0.75);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+      }
+      h1 { margin: 0 0 8px; font-size: 22px; }
+      h2 { margin: 18px 0 8px; font-size: 16px; }
+      p { margin: 10px 0; color: var(--muted); }
+      ul { margin: 10px 0 0 18px; color: var(--muted); }
+      li { margin: 6px 0; }
+      code {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        padding: 2px 6px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="card">
+        <h1>Session Saver Pro — Privacy Policy</h1>
+        <p>Last updated: 2026-01-02</p>
+
+        <p>
+          Session Saver Pro is a tab &amp; window session manager. It lets you save your current windows/tabs as a session,
+          search sessions by URL/title/domain, and restore sessions into new windows.
+        </p>
+
+        <h2>Data we collect</h2>
+        <ul>
+          <li>We do not collect personal data on a server.</li>
+          <li>All session data and settings are stored locally in your browser using <code>chrome.storage.local</code>.</li>
+        </ul>
+
+        <h2>Data we share</h2>
+        <ul>
+          <li>We do not sell, share, or transmit your data to third parties.</li>
+          <li>No external analytics or tracking SDKs are used.</li>
+        </ul>
+
+        <h2>Permissions justification</h2>
+        <ul>
+          <li><code>storage</code> — store saved sessions and settings locally.</li>
+          <li><code>tabs</code> — read open tabs (URL/title) to save/restore sessions.</li>
+          <li><code>alarms</code> — schedule autosave at a user-defined interval.</li>
+          <li><code>&lt;all_urls&gt;</code> host access — required to save/restore tabs for any website the user has open.</li>
+        </ul>
+
+        <h2>Remote code</h2>
+        <ul>
+          <li>The extension does not download or execute remote code. All executable code is packaged with the extension.</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p>
+          If you have questions, contact us via the email provided on the Chrome Web Store listing.
+        </p>
+      </div>
+    </main>
+  </body>
+</html>
