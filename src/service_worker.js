@@ -23,14 +23,6 @@ function clampInt(value, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
-function safeHostname(url) {
-  try {
-    return new URL(url).hostname;
-  } catch {
-    return "";
-  }
-}
-
 function now() {
   return Date.now();
 }
@@ -333,7 +325,7 @@ async function ensureAutosaveAlarm(settings) {
   }
 }
 
-async function bestEffortAutosave(reason) {
+async function bestEffortAutosave(_reason) {
   const t = now();
   if (t - lastAutosaveAttemptAt < 3000) return null;
   lastAutosaveAttemptAt = t;
