@@ -4,8 +4,25 @@ const searchInputEl = document.getElementById("searchInput");
 const sessionNameInputEl = document.getElementById("sessionNameInput");
 const saveBtnEl = document.getElementById("saveBtn");
 const metaEl = document.getElementById("meta");
+const appTitleEl = document.getElementById("appTitle");
 
 let allSessions = [];
+
+function t(key, substitutions) {
+  try {
+    return chrome.i18n.getMessage(key, substitutions) || "";
+  } catch {
+    return "";
+  }
+}
+
+function initI18n() {
+  document.title = t("popupDocumentTitle") || document.title;
+  if (appTitleEl) appTitleEl.textContent = t("popupHeaderTitle");
+  if (sessionNameInputEl) sessionNameInputEl.placeholder = t("popupSessionNamePlaceholder");
+  if (searchInputEl) searchInputEl.placeholder = t("popupSearchPlaceholder");
+  if (saveBtnEl) saveBtnEl.textContent = t("popupSaveButton");
+}
 
 function setStatus(text) {
   statusEl.textContent = text || "";
@@ -68,7 +85,7 @@ function renderSessions() {
   if (filtered.length === 0) {
     const empty = document.createElement("div");
     empty.className = "card";
-    empty.textContent = q.trim().length > 0 ? "No matches" : "No saved sessions";
+    empty.textContent = q.trim().length > 0 ? t("popupEmptyNoMatches") : t("popupEmptyNoSavedSessions");
     sessionsEl.appendChild(empty);
   } else {
     for (const item of filtered) {
@@ -81,15 +98,15 @@ function renderSessions() {
 
       const title = document.createElement("div");
       title.className = "cardTitle";
-      title.textContent = s.name || "(unnamed)";
+      title.textContent = s.name || t("popupUnnamedSession");
 
       const meta = document.createElement("div");
       meta.className = "cardMeta";
 
       const tabs = countTabs(s);
       const dateText = formatDate(s.updatedAt || s.createdAt);
-      const matchText = (q.trim().length > 0) ? ` • ${item.matchCount} matches` : "";
-      meta.textContent = `${dateText} • ${tabs} tabs${matchText}`;
+      const matchText = (q.trim().length > 0) ? ` • ${t("popupMatchText", [String(item.matchCount)])}` : "";
+      meta.textContent = `${dateText} • ${tabs} ${t("popupTabsWord")}${matchText}`;
 
       top.appendChild(title);
       top.appendChild(meta);
@@ -99,28 +116,28 @@ function renderSessions() {
 
       const restoreBtn = document.createElement("button");
       restoreBtn.className = "btn";
-      restoreBtn.textContent = "Restore";
+      restoreBtn.textContent = t("popupBtnRestore");
       restoreBtn.addEventListener("click", async () => {
         await onRestore(s.id);
       });
 
       const addTabsBtn = document.createElement("button");
       addTabsBtn.className = "btn";
-      addTabsBtn.textContent = "Add";
+      addTabsBtn.textContent = t("popupBtnAdd");
       addTabsBtn.addEventListener("click", async () => {
         await onAddTabs(s.id);
       });
 
       const deleteBtn = document.createElement("button");
       deleteBtn.className = "btn btnDanger";
-      deleteBtn.textContent = "Delete";
+      deleteBtn.textContent = t("popupBtnDelete");
       deleteBtn.addEventListener("click", async () => {
         await onDelete(s.id);
       });
 
       const updateBtn = document.createElement("button");
       updateBtn.className = "btn";
-      updateBtn.textContent = "Overwrite";
+      updateBtn.textContent = t("popupBtnOverwrite");
       updateBtn.addEventListener("click", async () => {
         await onUpdate(s.id);
       });
@@ -137,7 +154,7 @@ function renderSessions() {
     }
   }
 
-  metaEl.textContent = `Saved sessions: ${allSessions.length}`;
+  metaEl.textContent = t("popupSavedSessionsMeta", [String(allSessions.length)]);
 }
 
 async function sendMessage(message) {
@@ -147,7 +164,7 @@ async function sendMessage(message) {
 async function refreshSessions() {
   const res = await sendMessage({ type: "GET_SESSIONS" });
   if (!res || !res.ok) {
-    throw new Error((res && res.error) || "Failed to load sessions");
+    throw new Error((res && res.error) || t("popupErrorFailedToLoadSessions"));
   }
   allSessions = Array.isArray(res.sessions) ? res.sessions : [];
   renderSessions();
@@ -155,18 +172,18 @@ async function refreshSessions() {
 
 async function onUpdate(sessionId) {
   setStatus("");
-  const ok = window.confirm("Overwrite this saved session with your current windows/tabs? This cannot be undone.");
+  const ok = window.confirm(t("popupConfirmOverwrite"));
   if (!ok) return;
 
   try {
     const name = (sessionNameInputEl && sessionNameInputEl.value) ? sessionNameInputEl.value : "";
     const res = await sendMessage({ type: "UPDATE_SESSION", sessionId, name });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Overwrite failed");
+      throw new Error((res && res.error) || t("popupErrorOverwriteFailed"));
     }
     await refreshSessions();
     if (sessionNameInputEl) sessionNameInputEl.value = "";
-    setStatus("Overwritten");
+    setStatus(t("popupStatusOverwritten"));
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));
   }
@@ -177,11 +194,11 @@ async function onAddTabs(sessionId) {
   try {
     const res = await sendMessage({ type: "ADD_TABS_TO_SESSION", sessionId });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Add tabs failed");
+      throw new Error((res && res.error) || t("popupErrorAddFailed"));
     }
     const added = (res.result && typeof res.result.addedTabs === "number") ? res.result.addedTabs : 0;
     await refreshSessions();
-    setStatus(added > 0 ? `Added ${added} tabs` : "No new tabs to add");
+    setStatus(added > 0 ? t("popupStatusAddedTabs", [String(added)]) : t("popupStatusNoNewTabs"));
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));
   }
@@ -194,11 +211,11 @@ async function onSave() {
     const name = (sessionNameInputEl && sessionNameInputEl.value) ? sessionNameInputEl.value : "";
     const res = await sendMessage({ type: "SAVE_CURRENT_SESSION", name });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Save failed");
+      throw new Error((res && res.error) || t("popupErrorSaveFailed"));
     }
     await refreshSessions();
     if (sessionNameInputEl) sessionNameInputEl.value = "";
-    setStatus("Saved");
+    setStatus(t("popupStatusSaved"));
   } finally {
     saveBtnEl.disabled = false;
   }
@@ -209,9 +226,9 @@ async function onRestore(sessionId) {
   try {
     const res = await sendMessage({ type: "RESTORE_SESSION", sessionId });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Restore failed");
+      throw new Error((res && res.error) || t("popupErrorRestoreFailed"));
     }
-    setStatus(`Restored: ${res.result.restoredTabs} tabs`);
+    setStatus(t("popupStatusRestoredTabs", [String(res.result.restoredTabs)]));
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));
   }
@@ -219,16 +236,16 @@ async function onRestore(sessionId) {
 
 async function onDelete(sessionId) {
   setStatus("");
-  const ok = window.confirm("Delete this session?");
+  const ok = window.confirm(t("popupConfirmDelete"));
   if (!ok) return;
 
   try {
     const res = await sendMessage({ type: "DELETE_SESSION", sessionId });
     if (!res || !res.ok) {
-      throw new Error((res && res.error) || "Delete failed");
+      throw new Error((res && res.error) || t("popupErrorDeleteFailed"));
     }
     await refreshSessions();
-    setStatus("Deleted");
+    setStatus(t("popupStatusDeleted"));
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));
   }
@@ -259,6 +276,7 @@ searchInputEl.addEventListener("input", () => {
 
 (async () => {
   try {
+    initI18n();
     await refreshSessions();
   } catch (e) {
     setStatus(e instanceof Error ? e.message : String(e));

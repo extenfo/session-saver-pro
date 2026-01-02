@@ -3,30 +3,30 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Session Saver Pro — Options</title>
+    <title></title>
     <link rel="stylesheet" href="options.css" />
   </head>
   <body>
     <div class="app">
-      <h1>Options</h1>
+      <h1 id="pageTitle"></h1>
 
       <div class="card">
         <label class="row">
           <input id="autosaveEnabled" type="checkbox" />
-          <span>Enable autosave</span>
+          <span id="autosaveEnabledLabel"></span>
         </label>
 
         <label class="field">
-          <span class="label">Autosave interval (minutes)</span>
+          <span id="autosaveIntervalLabel" class="label"></span>
           <input id="autosaveInterval" type="number" min="1" step="1" />
         </label>
 
         <label class="field">
-          <span class="label">Max saved sessions</span>
+          <span id="maxSessionsLabel" class="label"></span>
           <input id="maxSessions" type="number" min="1" step="1" />
         </label>
 
-        <button id="saveBtn" class="primary">Save</button>
+        <button id="saveBtn" class="primary"></button>
 
         <div id="status" class="status" aria-live="polite"></div>
       </div>
