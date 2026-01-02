@@ -1,6 +1,6 @@
 {
   "name": "session-saver-pro",
-  "version": "0.1.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Session Saver Pro — Tab & Window Session Manager",
   "scripts": {
