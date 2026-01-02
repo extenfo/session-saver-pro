@@ -33,7 +33,7 @@
     "message": "(unnamed)"
   },
   "popupMatchText": {
-    "message": " • $1 matches"
+    "message": "$1 matches"
   },
   "popupTabsWord": {
     "message": "tabs"
