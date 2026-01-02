@@ -106,7 +106,7 @@ function renderSessions() {
 
       const addTabsBtn = document.createElement("button");
       addTabsBtn.className = "btn";
-      addTabsBtn.textContent = "Add Tabs";
+      addTabsBtn.textContent = "Add";
       addTabsBtn.addEventListener("click", async () => {
         await onAddTabs(s.id);
       });
@@ -125,9 +125,9 @@ function renderSessions() {
         await onUpdate(s.id);
       });
 
-      actions.appendChild(restoreBtn);
       if (s.id !== "autosave") actions.appendChild(addTabsBtn);
       actions.appendChild(updateBtn);
+      actions.appendChild(restoreBtn);
       actions.appendChild(deleteBtn);
 
       card.appendChild(top);
