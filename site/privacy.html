@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Session Saver Pro — Privacy Policy</title>
     <style>
       :root {
@@ -21,6 +21,7 @@
           radial-gradient(900px 600px at 90% 20%, rgba(99, 216, 170, 0.12), transparent 55%),
           var(--bg);
         color: var(--text);
+        line-height: 1.6;
       }
       .container {
         max-width: 920px;
@@ -28,64 +29,111 @@
         padding: 34px 18px 44px;
       }
       .card {
-        padding: 18px;
+        padding: 28px 24px;
         background: rgba(16, 26, 46, 0.75);
         border: 1px solid var(--border);
         border-radius: 16px;
       }
-      h1 { margin: 0 0 8px; font-size: 22px; }
-      h2 { margin: 18px 0 8px; font-size: 16px; }
+      h1 { margin: 0 0 4px; font-size: 24px; }
+      .updated { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+      .intro { color: var(--muted); margin-bottom: 24px; }
+      h2 { 
+        margin: 28px 0 12px; 
+        font-size: 17px; 
+        color: var(--accent);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+      }
       p { margin: 10px 0; color: var(--muted); }
-      ul { margin: 10px 0 0 18px; color: var(--muted); }
-      li { margin: 6px 0; }
+      ul { margin: 10px 0 0 18px; color: var(--muted); padding-left: 0; }
+      li { margin: 8px 0; list-style: none; padding-left: 20px; position: relative; }
+      li::before {
+        content: "•";
+        color: var(--accent);
+        position: absolute;
+        left: 0;
+      }
       code {
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.10);
         padding: 2px 6px;
-        border-radius: 8px;
+        border-radius: 6px;
+        font-size: 13px;
       }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .highlight {
+        background: rgba(79, 140, 255, 0.1);
+        border-left: 3px solid var(--accent);
+        padding: 12px 16px;
+        border-radius: 0 8px 8px 0;
+        margin: 16px 0;
+      }
+      .highlight p { margin: 0; }
     </style>
   </head>
   <body>
     <main class="container">
       <div class="card">
         <h1>Session Saver Pro — Privacy Policy</h1>
-        <p>Last updated: 2026-01-02</p>
+        <p class="updated">Last updated: January 2, 2026</p>
 
-        <p>
-          Session Saver Pro is a tab &amp; window session manager. It lets you save your current windows/tabs as a session,
-          search sessions by URL/title/domain, and restore sessions into new windows.
+        <p class="intro">
+          Session Saver Pro is a tab &amp; window session manager for Chrome. It lets you save your current windows and tabs as a session, search sessions by URL, title, or domain, and restore sessions into new windows.
         </p>
+
+        <div class="highlight">
+          <p><strong>Summary:</strong> All your data stays on your device. We don't collect, transmit, or sell any personal information.</p>
+        </div>
 
         <h2>Data we collect</h2>
         <ul>
-          <li>We do not collect personal data on a server.</li>
-          <li>All session data and settings are stored locally in your browser using <code>chrome.storage.local</code>.</li>
+          <li>We do <strong>not</strong> collect personal data on any server.</li>
+          <li>All session data (tab URLs, titles, window states) and settings are stored <strong>locally</strong> in your browser using <code>chrome.storage.local</code>.</li>
         </ul>
 
         <h2>Data we share</h2>
         <ul>
-          <li>We do not sell, share, or transmit your data to third parties.</li>
-          <li>No external analytics or tracking SDKs are used.</li>
+          <li>We do <strong>not</strong> sell, share, or transmit your data to third parties.</li>
+          <li>No external analytics, tracking SDKs, or advertising networks are used.</li>
+        </ul>
+
+        <h2>Data retention</h2>
+        <ul>
+          <li>Session data remains on your device until you manually delete it.</li>
+          <li>Uninstalling the extension removes all stored data.</li>
+          <li>You can delete any saved session at any time from within the extension.</li>
         </ul>
 
         <h2>Permissions justification</h2>
         <ul>
-          <li><code>storage</code> — store saved sessions and settings locally.</li>
-          <li><code>tabs</code> — read open tabs (URL/title) to save/restore sessions.</li>
-          <li><code>windows</code> — manage browser windows to restore saved sessions and reopen them as requested by the user.</li>
-          <li><code>alarms</code> — schedule autosave at a user-defined interval.</li>
-          <li><code>&lt;all_urls&gt;</code> host access — required to save/restore tabs for any website the user has open.</li>
+          <li><code>storage</code> — store saved sessions and user settings locally on your device.</li>
+          <li><code>tabs</code> — read open tabs (URL and title) to save and restore sessions.</li>
+          <li><code>windows</code> — manage browser windows to restore saved sessions into new windows.</li>
+          <li><code>alarms</code> — schedule autosave at user-defined intervals to prevent data loss.</li>
+          <li><code>&lt;all_urls&gt;</code> — required to save and restore tabs for any website you have open.</li>
         </ul>
 
         <h2>Remote code</h2>
         <ul>
-          <li>The extension does not download or execute remote code. All executable code is packaged with the extension.</li>
+          <li>This extension does <strong>not</strong> download or execute remote code.</li>
+          <li>All executable code is bundled within the extension package.</li>
+        </ul>
+
+        <h2>Changes to this policy</h2>
+        <ul>
+          <li>We may update this policy occasionally. Changes will be posted on this page with an updated revision date.</li>
         </ul>
 
         <h2>Contact</h2>
         <p>
-          If you have questions, contact us via the email provided on the Chrome Web Store listing.
+          If you have questions about this privacy policy, contact us at:<br>
+          <a href="mailto:ovitxer@gmail.com">ovitxer@gmail.com</a>
         </p>
       </div>
     </main>
