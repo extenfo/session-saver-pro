@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, rmSync, existsSync, readdirSync } from "node:fs";
+import { cpSync, mkdirSync, rmSync, existsSync, readdirSync, readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 
@@ -37,14 +37,37 @@ function assertIconsPresent() {
   }
 }
 
+function readManifest() {
+  const raw = readFileSync("manifest.json", "utf8");
+  return JSON.parse(raw);
+}
+
+function assertLocalesPresent(manifest) {
+  const defaultLocale = manifest && manifest.default_locale;
+  if (!defaultLocale) return;
+
+  if (!existsSync("_locales")) {
+    throw new Error("default_locale is set in manifest.json, but _locales/ folder is missing");
+  }
+
+  const messagesPath = join("_locales", defaultLocale, "messages.json");
+  if (!existsSync(messagesPath)) {
+    throw new Error(`default_locale is set to '${defaultLocale}', but missing ${messagesPath}`);
+  }
+}
+
 const distDir = "dist";
 ensureCleanDir(distDir);
 
+const manifest = readManifest();
+
 ensureIcons();
 assertIconsPresent();
+assertLocalesPresent(manifest);
 
 copyIntoDist(distDir, "manifest.json");
 copyIntoDist(distDir, "icons");
+if (manifest && manifest.default_locale) copyIntoDist(distDir, "_locales");
 copyIntoDist(distDir, "src");
 copyIntoDist(distDir, "site");
 
