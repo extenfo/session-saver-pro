@@ -60,7 +60,7 @@ function readManifest() {
 }
 
 function assertLocalesPresent(manifest) {
-  const defaultLocale = manifest && manifest.default_locale;
+  const defaultLocale = manifest.default_locale;
   if (!defaultLocale) return;
 
   if (!existsSync("_locales")) {
