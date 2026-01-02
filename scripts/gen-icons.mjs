@@ -17,16 +17,14 @@ function ensureIcons() {
   const sizes = [16, 32, 48, 128];
 
   let ResvgCtor = null;
-  if (hasSvg) {
-    try {
-      const mod = require("@resvg/resvg-js");
-      ResvgCtor = mod && mod.Resvg;
-    } catch {
-      ResvgCtor = null;
-    }
+  try {
+    const mod = require("@resvg/resvg-js");
+    ResvgCtor = mod && mod.Resvg;
+  } catch {
+    ResvgCtor = null;
   }
 
-  if (ResvgCtor && hasSvg) {
+  if (ResvgCtor) {
     const svg = readFileSync(svgPath);
     for (const size of sizes) {
       const file = join(dir, `icon${size}.png`);
